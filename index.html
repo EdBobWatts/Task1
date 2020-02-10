@@ -3,11 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>Task 1</title>
-    <link href="content/css/styles.css" rel="stylesheet" type="text/css" />
-    <script src="\app\lib\angular.min.js"></script>
+    <link href="content\css\styles.css" rel="stylesheet" type="text/css" />
+    <script src="app\lib\angular.min.js"></script>
   </head>
-  <body>
+  <body ng-init="colour='red'">
     <input type="text" ng-model="teacherName" placeholder="Enter Teacher Name" />
     <p>Name: {{teacherName}}</p>
+    <p class="{{colour}}">Favourite colour</p>
   </body>
 </html>
