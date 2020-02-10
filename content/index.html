@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" ng-app>
   <head>
     <meta charset="utf-8">
     <title>Task 1</title>
     <link href="content/css/styles.css" rel="stylesheet" type="text/css" />
-    <script src="app\lib\angular.min.js"></script>
+    <script src="\app\lib\angular.min.js"></script>
   </head>
   <body>
-
+    <input type="text" ng-model="teacherName" placeholder="Enter Teacher Name" />
+    <p>Name: {{teacherName}}</p>
   </body>
 </html>
