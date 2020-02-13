@@ -9,8 +9,78 @@
     <script src="app\app.js"></script>
   </head>
   <body ng-controller="MainController">
-    <header ng-include="'header.html'"></header>
+    <header class = "header">
+      <h1>My Class</h1>
+    </header>
     <div ng-view>
     </div>
+
+  <script type="text/ng-template" id="teacher">
+    <div class="teacherInfo">
+      <div class="leftPane oneOfThree">
+        <img src="content\img\profile.jpeg" alt="Teacher Portrait">
+        <h1 ng-click="toggleEdit()">{{teacherFirstname}} {{teacherSurname}}</h1>
+        <h3>{{teacherTelNo}}</h3>
+        <nav>
+          <ul>
+            <li>
+              <a href="">Home</a>
+            </li>
+            <li>
+              <a href="#/teacher">Edit Teacher</a>
+            </li>
+            <li>
+              <a href="#/students">Students</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="additionalInfo twoOfThree">
+        <h1>About Me</h1>
+        <h2>Interests</h2>
+        <ul>
+          <li ng-repeat="each in interests">{{each}}<span class="remove" ng-click="removeInterest(each)">x</span></li>
+        </ul>
+        <form class="addDetails" ng-submit="addInterest()">
+          <input type="text" placeholder="Enter new interest" ng-model="newInterest" required/>
+          <input type="submit" value="Add" />
+        </form>
+        <hr />
+        <h2>Pets</h2>
+        <input type="button" class="filters" ng-click="order = 'name'" value="Order by name" />
+        <input type="button" class="filters" ng-click="order = 'species'" value="Order by species" />
+        <ul>
+          <li ng-repeat="each in pets | orderBy: order">{{each.name}} - {{each.species}} - {{each.gender}} - {{each.age}}yrs<span class="remove" ng-click="removePet(each)">x</span></li>
+        </ul>
+        <form class="addDetails" ng-submit="addPet()">
+          <input type="text" placeholder="Enter name" ng-model="newPet.name" required />
+          <input type="text" placeholder="Enter species" ng-model="newPet.species" required />
+          <select ng-model="newPet.gender" required>
+            <option vlue="" disabled selected>Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <input type="text" placeholder="Enter age" ng-model="newPet.age" required />
+          <input type="submit" value="Add" />
+        </form>
+        <hr />
+        <div class="teacherForm {{showEdit}}">
+          <form ng-submit="editTeacher()">
+            <h2>Edit Teacher Details</h2>
+            <input type="text" name="firstname"  ng-model="newFirstname" placeholder="Enter Firstname" required />
+            <input type="text" name="surname" ng-model="newSurname" placeholder="Enter Surname" required />
+            <input type="text" name="telephone" ng-model="newTelNo" placeholder="Enter Phone Number" required />
+            <input type="submit" value="Save" />
+            <span class="remove" ng-click="toggleEdit()">Cancel</span>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </script>
+
+  <script type="text/ng-template" id="students">
+    <h1>Students!!</h1>
+  </script>
   </body>
 </html>
