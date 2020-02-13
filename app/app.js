@@ -1,4 +1,19 @@
-var myApp = angular.module('MyClass',[]);
+var myApp = angular.module('MyClass',['ngRoute']);
+
+myApp.config(['$routeProvider', function($routeProvider){
+
+  $routeProvider
+  .when('/teacher', {
+    templateUrl: 'views/teacher.html',
+    controller: 'MainController'
+  })
+  .when('/students', {
+    templateUrl: 'views/students.html'
+  })
+  .otherwise({
+    redirectTo: '/teacher'
+  });
+}]);
 
 myApp.controller('MainController', ['$scope', function($scope) {
   $scope.showEdit = "";
