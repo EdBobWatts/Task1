@@ -5,6 +5,7 @@ html{
 body {
   box-sizing: border-box;
   background-color: #555;
+  margin:0;
 }
 input, select{
   width: 30%;
