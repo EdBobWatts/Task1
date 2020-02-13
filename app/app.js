@@ -4,16 +4,19 @@ myApp.config(['$routeProvider', function($routeProvider){
 
   $routeProvider
   .when('/teacher', {
-    templateUrl: 'views/teacher.html',
+    templateUrl: 'teacher',
     controller: 'MainController'
   })
   .when('/students', {
-    templateUrl: 'views/students.html'
+    templateUrl: 'students',
+    controller: 'MainController'
   })
   .otherwise({
     redirectTo: '/teacher'
   });
 }]);
+
+
 
 myApp.controller('MainController', ['$scope', function($scope) {
   $scope.showEdit = "";
