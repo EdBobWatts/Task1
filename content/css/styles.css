@@ -116,9 +116,9 @@ input[type="submit"]:hover, input[type="button"]:hover{
 .addDetails{
   flex-basis:30%;
 }
-
+.hidden{
+  display:none;
+}
 .showing{
   display:block;
-}
-
 }

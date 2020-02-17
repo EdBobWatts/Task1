@@ -11,12 +11,14 @@
   <body ng-controller="MainController">
     <header class = "header">
       <h1>My Class</h1>
+      <script>document.write('<base href="' + document.location + '" />');</script>
+          <p>Hello {{name}}!</p>
+          <input type="file" file-reader="fileContent" />
+          <div>{{fileContent}}</div>
     </header>
     <div class="teacherInfo">
       <div class="leftPane oneOfThree">
-        Choose .csv file
-        <input type="file" name="readCsvFile" id="readCsvFile" accept=".csv">
-        <input type="button" value="Upload" ng-click="uploadCsvFile()">
+
         <img src="content\img\profile.jpeg" alt="Teacher Portrait">
         <h1 ng-click="toggleEdit()">{{teacherFirstname}} {{teacherSurname}}</h1>
         <h3>{{teacherTelNo}}</h3>
@@ -78,6 +80,8 @@
         <h1>{{message}}</h1>
       </div>
     </div>
+
+    </body>
 
 
   </body>

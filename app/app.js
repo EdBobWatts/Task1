@@ -1,25 +1,12 @@
-var myApp = angular.module('MyClass',['ngRoute']);
-
-myApp.config(['$routeProvider', function($routeProvider){
-
-  $routeProvider
-  .when('/teacher', {
-    templateUrl: 'teacher',
-    controller: 'MainController'
-  })
-  .when('/students', {
-    templateUrl: 'students',
-    controller: 'MainController'
-  })
-  .otherwise({
-    redirectTo: '/teacher'
-  });
-}]);
-
+var myApp = angular.module('MyClass',[]);
 
 
 myApp.controller('MainController', ['$scope', function($scope) {
+  $scope.name = 'World';
+
   $scope.showEdit = "";
+  $scope.showTeacherState = "showing";
+  $scope.showStudentsState = "hidden";
   $scope.teacherFirstname = 'Ed';
   $scope.teacherSurname = 'Watts';
   $scope.teacherTelNo = "01234567890";
@@ -111,5 +98,43 @@ myApp.controller('MainController', ['$scope', function($scope) {
     $scope.newTelNo = "";
     $scope.newFirstname = "";
     $scope.newSurname = "";
-  }
+  };
+
+  // Handle teacher link
+  $scope.showTeacher = function(){
+    $scope.showTeacherState = "showing";
+    $scope.showStudentsState = "hidden";
+  };
+
+  // Handle Students link
+  $scope.showStudents = function(){
+    $scope.showTeacherState = "hidden";
+    $scope.showStudentsState = "showing";
+  };
+
 }]);
+
+
+myApp.directive('fileReader', function() {
+  return {
+    scope: {
+      fileReader:"="
+    },
+    link: function(scope, element) {
+      $(element).on('change', function(changeEvent) {
+        var files = changeEvent.target.files;
+        if (files.length) {
+          var r = new FileReader();
+          r.onload = function(e) {
+              var contents = e.target.result;
+              scope.$apply(function () {
+                scope.fileReader = contents;
+              });
+          };
+
+          r.readAsText(files[0]);
+        }
+      });
+    }
+  };
+});
