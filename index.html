@@ -1,84 +1,78 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="MyClass">
+<html ng-app="plunker">
+
   <head>
-    <meta charset="utf-8">
-    <title>Task 1</title>
-    <link href="content\css\styles.css" rel="stylesheet" type="text/css" />
-    <script src="app\lib\angular.min.js"></script>
-    <script src="app\lib\angular-route.min.js"></script>
+    <meta charset="utf-8" />
+    <title>My Class</title>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+    <link rel="stylesheet" href="content\css\style.css" />
+    <script src="app\angular.min.js"></script>
+    <script src="app\jquery.min.js"></script>
     <script src="app\app.js"></script>
   </head>
-  <body ng-controller="MainController">
-    <header class = "header">
-      <h1>My Class</h1>
+
+  <body ng-controller="MainCtrl">
+    <header>
+      <h1 class="title">My Class</h1>
+      <nav>
+        <ul>
+          <li><input type="button" ng-click="goHome()" value="Home" /></li>
+          <li><input type="button" ng-click="showTeacher()" value="Teacher" /></li>
+          <li><input type="button" ng-click="showStudents()" value="Students" /></li>
+        </ul>
+      </nav>
     </header>
-    <div class="teacherInfo">
-      <div class="leftPane oneOfThree">
-        Choose .csv file
-        <input type="file" name="readCsvFile" id="readCsvFile" accept=".csv">
-        <input type="button" value="Upload" ng-click="uploadCsvFile()">
-        <img src="content\img\profile.jpeg" alt="Teacher Portrait">
-        <h1 ng-click="toggleEdit()">{{teacherFirstname}} {{teacherSurname}}</h1>
-        <h3>{{teacherTelNo}}</h3>
-        <nav>
+    <div class="container">
+      <nav class="left-nav">
+        <h3>Menu</h3>
+        <hr />
+        <ul>
+          <li><input type="button" ng-click="goHome()" value="Home" /></li>
+          <li><input type="button" ng-click="showTeacher()" value="Teacher" /></li>
+          <li><input type="button" ng-click="showStudents()" value="Students" /></li>
+        </ul>
+      </nav>
+      <div class="content">
+        <h1>{{view}}</h1>
+        <div class="content-view {{showStudentsState}}">
+          <h2>Upload student data:</h2>
+          <input type="file" file-reader="fileContent" />
+          <div>{{fileContent}}</div>
+        </div>
+
+
+        <div class="content-view {{showTeacherState}}">
+          <h2>Teacher Section</h2>
+          <h1>About Me</h1>
+          <h2>Interests</h2>
           <ul>
-            <li>
-              <input type="button" ng-click="goHome()" value="Home" />
-            </li>
-            <li>
-              <input type="button" ng-click="showTeacher()" value="Teacher" />
-            </li>
-            <li>
-              <input type="button" ng-click="showStudents()" value="Students" />
-            </li>
+            <li ng-repeat="each in interests">{{each}}<span class="remove" ng-click="removeInterest(each)">x</span></li>
           </ul>
-        </nav>
-      </div>
-      <div class="additionalInfo twoOfThree {{showTeacherState}}">
-        <h1>About Me</h1>
-        <h2>Interests</h2>
-        <ul>
-          <li ng-repeat="each in interests">{{each}}<span class="remove" ng-click="removeInterest(each)">x</span></li>
-        </ul>
-        <form class="addDetails" ng-submit="addInterest()">
-          <input type="text" placeholder="Enter new interest" ng-model="newInterest" required/>
-          <input type="submit" value="Add" />
-        </form>
-        <hr />
-        <h2>Pets</h2>
-        <input type="button" class="filters" ng-click="order = 'name'" value="Order by name" />
-        <input type="button" class="filters" ng-click="order = 'species'" value="Order by species" />
-        <ul>
-          <li ng-repeat="each in pets | orderBy: order">{{each.name}} - {{each.species}} - {{each.gender}} - {{each.age}}yrs<span class="remove" ng-click="removePet(each)">x</span></li>
-        </ul>
-        <form class="addDetails" ng-submit="addPet()">
-          <input type="text" placeholder="Enter name" ng-model="newPet.name" required />
-          <input type="text" placeholder="Enter species" ng-model="newPet.species" required />
-          <select ng-model="newPet.gender" required>
-            <option vlue="" disabled selected>Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-          <input type="text" placeholder="Enter age" ng-model="newPet.age" required />
-          <input type="submit" value="Add" />
-        </form>
-        <hr />
-        <div class="teacherForm {{showEdit}}">
-          <form ng-submit="editTeacher()">
-            <h2>Edit Teacher Details</h2>
-            <input type="text" name="firstname"  ng-model="newFirstname" placeholder="Enter Firstname" required />
-            <input type="text" name="surname" ng-model="newSurname" placeholder="Enter Surname" required />
-            <input type="text" name="telephone" ng-model="newTelNo" placeholder="Enter Phone Number" required />
-            <input type="submit" value="Save" />
-            <span class="remove" ng-click="toggleEdit()">Cancel</span>
+          <form class="addDetails" ng-submit="addInterest()">
+            <input type="text" placeholder="Enter new interest" ng-model="newInterest" required/>
+            <input type="submit" value="Add" />
+          </form>
+          <hr />
+          <h2>Pets</h2>
+          <input type="button" class="filters" ng-click="order = 'name'" value="Order by name" />
+          <input type="button" class="filters" ng-click="order = 'species'" value="Order by species" />
+          <ul>
+            <li ng-repeat="each in pets | orderBy: order">{{each.name}} - {{each.species}} - {{each.gender}} - {{each.age}}yrs<span class="remove" ng-click="removePet(each)">x</span></li>
+          </ul>
+          <form class="addDetails" ng-submit="addPet()">
+            <input type="text" placeholder="Enter name" ng-model="newPet.name" required />
+            <input type="text" placeholder="Enter species" ng-model="newPet.species" required />
+            <select ng-model="newPet.gender" required>
+              <option vlue="" disabled selected>Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <input type="text" placeholder="Enter age" ng-model="newPet.age" required />
+            <input type="submit" value="Add" />
           </form>
         </div>
       </div>
-      <div class="{{showStudentsState}}" ng-controller="StudentController">
-        <h1>{{message}}</h1>
-      </div>
     </div>
-
-
   </body>
+
 </html>
