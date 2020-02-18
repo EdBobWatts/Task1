@@ -1,4 +1,4 @@
-var app = angular.module('plunker', []);
+var app = angular.module('MyClassApp', []);
 
 app.controller('MainCtrl', function($scope) {
   $scope.view = 'Student';
