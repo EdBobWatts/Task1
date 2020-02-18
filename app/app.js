@@ -1,4 +1,4 @@
-var app = angular.module('MyClassApp', []);
+var app = angular.module('MyClassApp', ["ngSanitize"]);
 
 app.controller('MainCtrl', function($scope) {
   $scope.view = 'Student';
@@ -90,9 +90,17 @@ app.directive('fileReader', function() {
           var r = new FileReader();
           r.onload = function(e) {
               var contents = e.target.result;
-              scope.$apply(function () {
-                scope.fileReader = contents;
+              var results = Papa.parse(contents, {header: false, skipEmptyLines: true});
+              var newTableContent = "";
+              results.data.forEach(function(row) {
+                newTableContent = newTableContent+"<tr>";
+                row.forEach(function(field){
+                  newTableContent = newTableContent+"<td>"+field+"</td>";
+                });
+                newTableContent = newTableContent+"</tr>";
               });
+              scope.fileReader = newTableContent;
+              scope.$apply();
           };
 
           r.readAsText(files[0]);

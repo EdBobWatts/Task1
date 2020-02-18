@@ -75,6 +75,24 @@ nav input{
   margin-bottom:10px;
 }
 
+.studentData{
+  width: 100%;
+  border: 1px #ccc solid;
+  border-radius: 10px;
+}
+
+.studentData tr:first-child{
+  font-weight: bold;
+}
+tr{
+
+}
+td{
+  padding: 10px;
+}
+.studentData td:first-of-type{
+  width: 10%;
+}
 .hidden{
   display: none;
 }

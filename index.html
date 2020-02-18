@@ -7,7 +7,9 @@
     <script>document.write('<base href="' + document.location + '" />');</script>
     <link rel="stylesheet" href="content\css\style.css" />
     <script src="app\angular.min.js"></script>
+    <script src="app\angular-sanitize.min.js"></script>
     <script src="app\jquery.min.js"></script>
+    <script src="app\papaparse.min.js"></script>
     <script src="app\app.js"></script>
   </head>
 
@@ -37,7 +39,8 @@
         <div class="content-view {{showStudentsState}}">
           <h2>Upload student data:</h2>
           <input type="file" file-reader="fileContent" />
-          <div>{{fileContent}}</div>
+          <table class="studentData" ng-bind-html="fileContent">
+          </table>
         </div>
 
 
