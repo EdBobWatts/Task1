@@ -1,0 +1,88 @@
+/* Put your css in here */
+
+html{
+  font-family: Arial;
+}
+body, h1, h2, h3, html {
+  margin:0;
+  padding:0;
+}
+
+header{
+  background-color: #006666;
+  color: #fff;
+  padding:0;
+  margin:0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+ul{
+  padding:0;
+  margin:0;
+  list-style: none;
+}
+header nav ul{
+  display: flex;
+  justify-content: flex-end;
+}
+.title, header nav{
+  flex-basis: 50%;
+}
+
+input, select{
+  padding:8px;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+}
+input[type="submit"]{
+  width:20%;
+}
+input[type="submit"]:hover, input[type="button"]:hover{
+  background-color:#22bbbb;
+  cursor: pointer;
+}
+nav input{
+  color: #fff;
+  font-size: 1.2em;
+  background-color: inherit;
+  border: none;
+}
+.container{
+  display:flex;
+}
+
+.left-nav{
+  background-color: #ccc;
+}
+.left-nav h3{
+  text-align: center;
+  margin-top: 10px;
+}
+.left-nav input{
+  color: #000;
+  width:100%;
+}
+.content{
+  background-color: white;
+  flex-grow: 1;
+  padding: 1%;
+}
+
+.content h1, h2{
+  margin-bottom:10px;
+}
+
+.hidden{
+  display: none;
+}
+.showing{
+  display:block;
+}
+.remove{
+    color:red;
+    margin-left:5px;
+    cursor: pointer;
+  }

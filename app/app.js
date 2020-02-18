@@ -1,15 +1,9 @@
-var myApp = angular.module('MyClass',[]);
+var app = angular.module('MyClassApp', []);
 
-
-myApp.controller('MainController', ['$scope', function($scope) {
-  $scope.name = 'World';
-
-  $scope.showEdit = "";
+app.controller('MainCtrl', function($scope) {
+  $scope.view = 'Student';
   $scope.showTeacherState = "showing";
   $scope.showStudentsState = "hidden";
-  $scope.teacherFirstname = 'Ed';
-  $scope.teacherSurname = 'Watts';
-  $scope.teacherTelNo = "01234567890";
   $scope.interests = ['Drumming', 'Cycling', 'Electronics'];
   $scope.pets = [{
       name: 'Miso',
@@ -30,12 +24,26 @@ myApp.controller('MainController', ['$scope', function($scope) {
       age: '8'
   }];
 
-  $scope.toggleEdit = function(){
-    if($scope.showEdit == ""){
-      $scope.showEdit = "showing";
-    } else {
-      $scope.showEdit = "";
-    }
+  // Handle students link
+  $scope.showStudents = function(){
+    $scope.showTeacherState = "hidden";
+    $scope.showStudentsState = "showing";
+  };
+
+
+  // Handle teacher link
+  $scope.showTeacher = function(){
+    $scope.showTeacherState = "showing";
+    $scope.showStudentsState = "hidden";
+  };
+
+
+  //Create a function to add data to array
+  $scope.addInterest = function(){
+    //Push the data to the array
+    $scope.interests.push($scope.newInterest)
+    //Clear out the input fields
+    $scope.newInterest ="";
   };
 
   //Create a function to remove interests and assign it to a scope variable
@@ -45,31 +53,6 @@ myApp.controller('MainController', ['$scope', function($scope) {
     var removedInterest = $scope.interests.indexOf(interest);
     //Ammend the array, begin at the index of the chosen item and remove 1 element.
     $scope.interests.splice(removedInterest, 1);
-  };
-
-  //Create a function to add data to array
-  $scope.addInterest = function(){
-    //Push the data to the array
-    $scope.interests.push($scope.newInterest)
-    //Clear out the input fields
-    $scope.newInterest ="";
-  };
-
-  //Create a function to remove interests and assign it to a scope variable
-  //Accept the selected interest as a parameter
-  $scope.removePet = function(pet){
-    //Find the index of the chosen item
-    var removedPet = $scope.pets.indexOf(pet);
-    //Ammend the array, begin at the index of the chosen item and remove 1 element.
-    $scope.pets.splice(removedPet, 1);
-  };
-
-  //Create a function to add data to array
-  $scope.addInterest = function(){
-    //Push the data to the array
-    $scope.interests.push($scope.newInterest)
-    //Clear out the input fields
-    $scope.newInterest ="";
   };
 
   $scope.addPet = function(){
@@ -87,35 +70,15 @@ myApp.controller('MainController', ['$scope', function($scope) {
     $scope.newPet.age ="";
   };
 
-
-  $scope.editTeacher = function(){
-
-    $scope.teacherFirstname = $scope.newFirstname;
-    $scope.teacherSurname  = $scope.newSurname;
-    $scope.teacherTelNo  = $scope.newTelNo;
-
-    //Clear out the fields
-    $scope.newTelNo = "";
-    $scope.newFirstname = "";
-    $scope.newSurname = "";
+  $scope.removePet = function(pet){
+    //Find the index of the chosen item
+    var removedPet = $scope.pets.indexOf(pet);
+    //Ammend the array, begin at the index of the chosen item and remove 1 element.
+    $scope.pets.splice(removedPet, 1);
   };
+});
 
-  // Handle teacher link
-  $scope.showTeacher = function(){
-    $scope.showTeacherState = "showing";
-    $scope.showStudentsState = "hidden";
-  };
-
-  // Handle Students link
-  $scope.showStudents = function(){
-    $scope.showTeacherState = "hidden";
-    $scope.showStudentsState = "showing";
-  };
-
-}]);
-
-
-myApp.directive('fileReader', function() {
+app.directive('fileReader', function() {
   return {
     scope: {
       fileReader:"="
