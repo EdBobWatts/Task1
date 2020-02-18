@@ -29,13 +29,12 @@
         <h3>Menu</h3>
         <hr />
         <ul>
-          <li><input type="button" ng-click="goHome()" value="Home" /></li>
+          <li><input type="button" ng-click="toggleEdit()" value="Edit Teacher" /></li>
           <li><input type="button" ng-click="showTeacher()" value="Teacher" /></li>
           <li><input type="button" ng-click="showStudents()" value="Students" /></li>
         </ul>
       </nav>
       <div class="content">
-        <h1>{{view}}</h1>
         <div class="content-view {{showStudentsState}}">
           <h2>Upload student data:</h2>
           <input type="file" file-reader="fileContent" />
@@ -45,9 +44,21 @@
 
 
         <div class="content-view {{showTeacherState}}">
-          <h2>Teacher Section</h2>
-          <h1>About Me</h1>
-          <h2>Interests</h2>
+          <h1>Teacher Section</h1>
+          <h2>About Me</h2>
+          <h2>Name: {{teacher.firstname}} {{teacher.surname}}</h2>
+          <p>Contact Tel: {{teacher.tel}}</p>
+          <div class="teacherForm {{showEdit}}">
+            <form ng-submit="editTeacher()">
+              <h2>Edit Teacher Details</h2>
+              <input type="text" name="firstname"  ng-model="newFirstname" placeholder="Enter Firstname" required />
+              <input type="text" name="surname" ng-model="newSurname" placeholder="Enter Surname" required />
+              <input type="text" name="telephone" ng-model="newTelNo" placeholder="Enter Phone Number" required />
+              <input type="submit" value="Save" />
+              <span class="remove" ng-click="toggleEdit()">Cancel</span>
+            </form>
+          </div>
+          <h3>Interests</h3>
           <ul>
             <li ng-repeat="each in interests">{{each}}<span class="remove" ng-click="removeInterest(each)">x</span></li>
           </ul>
@@ -56,7 +67,7 @@
             <input type="submit" value="Add" />
           </form>
           <hr />
-          <h2>Pets</h2>
+          <h3>Pets</h3>
           <input type="button" class="filters" ng-click="order = 'name'" value="Order by name" />
           <input type="button" class="filters" ng-click="order = 'species'" value="Order by species" />
           <ul>

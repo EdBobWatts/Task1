@@ -75,6 +75,27 @@ nav input{
   margin-bottom:10px;
 }
 
+.teacherForm{
+  width: 50%;
+  margin-left: 20%;
+  padding: 20px;
+  background: #ccc;
+  border-radius: 10px;
+  text-align: center;
+  display: none;
+}
+.teacherForm input{
+  width: 95%;
+  margin-bottom: 8px;
+}
+.teacherForm input[type="submit"]{
+  width:20%;
+}
+.teacherForm span{
+  display:block;
+  margin: 0;
+}
+
 .studentData{
   width: 100%;
   border: 1px #ccc solid;

@@ -1,10 +1,19 @@
 var app = angular.module('MyClassApp', ["ngSanitize"]);
 
 app.controller('MainCtrl', function($scope) {
-  $scope.view = 'Student';
   $scope.showTeacherState = "showing";
   $scope.showStudentsState = "hidden";
+  // Initialise teacher info
+  $scope.teacher = {
+    firstname: "Corey",
+    surname: "Doctorow",
+    tel: "01234567890"
+  };
+
+  //Initialise interests
   $scope.interests = ['Drumming', 'Cycling', 'Electronics'];
+
+  //Initialise Pets
   $scope.pets = [{
       name: 'Miso',
       species: 'Dog',
@@ -38,7 +47,7 @@ app.controller('MainCtrl', function($scope) {
   };
 
 
-  //Create a function to add data to array
+  //Add new interest data to array
   $scope.addInterest = function(){
     //Push the data to the array
     $scope.interests.push($scope.newInterest)
@@ -46,8 +55,8 @@ app.controller('MainCtrl', function($scope) {
     $scope.newInterest ="";
   };
 
-  //Create a function to remove interests and assign it to a scope variable
-  //Accept the selected interest as a parameter
+
+  //Remove interest from array
   $scope.removeInterest = function(interest){
     //Find the index of the chosen item
     var removedInterest = $scope.interests.indexOf(interest);
@@ -55,6 +64,7 @@ app.controller('MainCtrl', function($scope) {
     $scope.interests.splice(removedInterest, 1);
   };
 
+  //Add new pet data to array
   $scope.addPet = function(){
     //Push the data to the array
     $scope.pets.push({
@@ -70,13 +80,36 @@ app.controller('MainCtrl', function($scope) {
     $scope.newPet.age ="";
   };
 
+  //Remove selected pet from array
   $scope.removePet = function(pet){
     //Find the index of the chosen item
     var removedPet = $scope.pets.indexOf(pet);
     //Ammend the array, begin at the index of the chosen item and remove 1 element.
     $scope.pets.splice(removedPet, 1);
   };
+
+    //Toggle the display of teacher edit form
+  $scope.toggleEdit = function(){
+    if($scope.showEdit == ""){
+      $scope.showEdit = "showing";
+    } else {
+      $scope.showEdit = "";
+    }
+  };
+
+  // Handle submission of teacher edit form
+  $scope.editTeacher = function(){
+   $scope.teacher.firstname = $scope.newFirstname;
+   $scope.teacher.surname  = $scope.newSurname;
+   $scope.teacher.tel  = $scope.newTelNo;
+
+   //Clear out the fields
+   $scope.newTelNo = "";
+   $scope.newFirstname = "";
+   $scope.newSurname = "";
+ }
 });
+
 
 app.directive('fileReader', function() {
   return {
