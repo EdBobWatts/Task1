@@ -7,11 +7,15 @@
     <script>document.write('<base href="' + document.location + '" />');</script>
     <link rel="stylesheet" href="content\css\style.css" />
     <script src="app\angular.min.js"></script>
+    <script src="app\angular-sanitize.min.js"></script>
     <script src="app\jquery.min.js"></script>
+    <script src="app\papaparse.min.js"></script>
+    <script src="app\angular-messages.min.js"></script>
     <script src="app\app.js"></script>
   </head>
 
   <body ng-controller="MainCtrl">
+  <!-- Main Page Header -->
     <header>
       <h1 class="title">My Class</h1>
       <nav>
@@ -22,57 +26,183 @@
         </ul>
       </nav>
     </header>
+  <!-- Header End -->
+
+  <!-- Page container -->
     <div class="container">
-      <nav class="left-nav">
+      <!-- Left navigation - only shown in teacher view -->
+      <nav class="left-nav {{views.teacher}}">
         <h3>Menu</h3>
         <hr />
         <ul>
-          <li><input type="button" ng-click="goHome()" value="Home" /></li>
-          <li><input type="button" ng-click="showTeacher()" value="Teacher" /></li>
-          <li><input type="button" ng-click="showStudents()" value="Students" /></li>
+          <li><input type="button" ng-click="toggleTEdit()" value="Edit Teacher" /></li>
+          <li><input type="button" ng-click="togglePEdit()" value="Add Pet" /></li>
+          <li><input type="button" ng-click="toggleIEdit()" value="Add Interest" /></li>
         </ul>
       </nav>
+      <!-- End of left nav -->
+
+      <!-- Main app content -->
       <div class="content">
-        <h1>{{view}}</h1>
-        <div class="content-view {{showStudentsState}}">
+        <!-- Home page content -->
+        <div class="content-view homeView {{views.home}}">
+          <h1>Welcome to My Class</h1>
+          <input type="button" value="View Teacher" ng-click="showTeacher()">
+          <input type="button" value="View Students" ng-click="showStudents()">
+        </div>
+        <!-- End of homepage -->
+
+        <!-- Student page content -->
+        <div class="content-view {{views.students}}">
+          <h1>Student Section</h1>
           <h2>Upload student data:</h2>
           <input type="file" file-reader="fileContent" />
-          <div>{{fileContent}}</div>
+          <table class="studentData" ng-bind-html="fileContent">
+          </table>
         </div>
+        <!-- End of student content -->
+
+        <!-- Teacher Page content -->
+        <div class="content-view teacherContent {{views.teacher}}">
+          <!-- Info edit forms - Hidden by default -->
+          <div>
+            <div class="editForm {{showEdit.teacher}}">
+              <form name="teacherForm" ng-submit="editTeacher()">
+                <h2>Edit Teacher Details</h2>
+                <input type="text" name="firstname"  ng-model="newFirstname" placeholder="Enter Firstname"  required
+                ng-pattern="/^[a-zA-Z ]+$/" required ng-class="{'invalid-input':teacherForm.firstname.$dirty $$ teacherForm.firstname.$invalid}" />
+                <div class="error" ng-messages="teacherForm.firstname.$error" ng-show="teacherForm.firstname.$dirty">
+                  <span ng-message="required">Firstname is required</span>
+                  <span ng-message="pattern">Only letters are allowed</span>
+                </div>
+                <input type="text" name="surname" ng-model="newSurname" placeholder="Enter Surname"  required
+                ng-pattern="/^[a-zA-Z ]+$/" required ng-class="{'invalid-input':teacherForm.surname.$dirty $$ teacherForm.surname.$invalid}" />
+                <div class="error" ng-messages="teacherForm.surname.$error" ng-show="teacherForm.surname.$dirty">
+                  <span ng-message="required">Surname is required</span>
+                  <span ng-message="pattern">Only letters are allowed</span>
+                </div>
+
+                <input type="text" name="subject"  ng-model="newSubject" placeholder="Enter Subject"  required
+                ng-pattern="/^[a-zA-Z ]+$/" required ng-class="{'invalid-input':teacherForm.Subject.$dirty $$ teacherForm.subject.$invalid}" />
+                <div class="error" ng-messages="teacherForm.subject.$error" ng-show="teacherForm.subject.$dirty">
+                  <span ng-message="required">Subject is required</span>
+                  <span ng-message="pattern">Only letters are allowed</span>
+                </div>
+
+                <input type="text" name="telephone" ng-model="newTelNo" placeholder="Enter Phone Number"  required
+                ng-pattern="/^[0-9 ]+$/" ng-minlength="11" required ng-class="{'invalid-input':teacherForm.telephone.$dirty $$ teacherForm.telephone.$invalid}" />
+              <div class="error" ng-messages="teacherForm.telephone.$error" ng-show="teacherForm.telephone.$touched">
+                <span ng-message="required">Telephone is required</span>
+                <span ng-message="pattern">Only numbers are allowed</span>
+                <span ng-message="minlength">Needs to be at least 11 digits</span>
+              </div>
+                <input type="submit" value="Save" ng-disabled="teacherForm.$invalid"/>
+                <span class="remove" ng-click="toggleTEdit()">Cancel</span>
+              </form>
+            </div>
+            <div class="editForm {{showEdit.interests}}">
+              <form name= "interestForm" class="addDetails" ng-submit="addInterest()">
+                <h2>Add Interest</h2>
+                <input type="text" name="name" placeholder="Enter new interest" ng-model="newInterest" required
+                ng-pattern="/^[a-zA-Z ]+$/" required ng-class="{'invalid-input':interestForm.name.$dirty $$ interestForm.name.$invalid}" />
+                <div class="error" ng-messages="interestForm.name.$error" ng-show="interestForm.name.$dirty">
+                  <span ng-message="required">Interest name is required</span>
+                  <span ng-message="pattern">Only letters are allowed</span>
+                </div>
 
 
-        <div class="content-view {{showTeacherState}}">
-          <h2>Teacher Section</h2>
-          <h1>About Me</h1>
-          <h2>Interests</h2>
-          <ul>
-            <li ng-repeat="each in interests">{{each}}<span class="remove" ng-click="removeInterest(each)">x</span></li>
-          </ul>
-          <form class="addDetails" ng-submit="addInterest()">
-            <input type="text" placeholder="Enter new interest" ng-model="newInterest" required/>
-            <input type="submit" value="Add" />
-          </form>
-          <hr />
-          <h2>Pets</h2>
-          <input type="button" class="filters" ng-click="order = 'name'" value="Order by name" />
-          <input type="button" class="filters" ng-click="order = 'species'" value="Order by species" />
-          <ul>
-            <li ng-repeat="each in pets | orderBy: order">{{each.name}} - {{each.species}} - {{each.gender}} - {{each.age}}yrs<span class="remove" ng-click="removePet(each)">x</span></li>
-          </ul>
-          <form class="addDetails" ng-submit="addPet()">
-            <input type="text" placeholder="Enter name" ng-model="newPet.name" required />
-            <input type="text" placeholder="Enter species" ng-model="newPet.species" required />
-            <select ng-model="newPet.gender" required>
-              <option vlue="" disabled selected>Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-            <input type="text" placeholder="Enter age" ng-model="newPet.age" required />
-            <input type="submit" value="Add" />
-          </form>
+                <input type="submit" value="Add" />
+                <span class="remove" ng-click="toggleIEdit()">Cancel</span>
+              </form>
+            </div>
+            <div class="editForm {{showEdit.pets}}">
+              <form name="petForm" class="addDetails {{showEdit.pets}}" ng-submit="addPet()">
+                <h2>Add Pet</h2>
+                <input type="text" name="name" placeholder="Enter name" ng-model="newPet.name"
+                  ng-pattern="/^[a-zA-Z ]+$/" required ng-class="{'invalid-input':petForm.name.$dirty $$ petForm.name.$invalid}" />
+                <div class="error" ng-messages="petForm.name.$error" ng-show="petForm.name.$dirty">
+                  <span ng-message="required">Pet name is required</span>
+                  <span ng-message="pattern">Only letters are allowed</span>
+                </div>
+
+                <input type="text" name="species" placeholder="Enter species" ng-model="newPet.species" required
+                ng-pattern="/^[a-zA-Z ]+$/" required ng-class="{'invalid-input':petForm.species.$dirty $$ petForm.species.$invalid}" />
+              <div class="error" ng-messages="petForm.species.$error" ng-show="petForm.species.$dirty">
+                <span ng-message="required">Species is required</span>
+                <span ng-message="pattern">Only letters are allowed</span>
+              </div>
+
+                <select ng-model="newPet.gender" required>
+                  <option vlue="" disabled>Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+
+                <input type="number" name="age" placeholder="Enter age" ng-model="newPet.age" required
+                ng-pattern="/^[0-9]+$/" required ng-class="{'invalid-input':petForm.age.$dirty $$ petForm.age.$invalid}" />
+                <div class="error" ng-messages="petForm.age.$error" ng-show="petForm.age.$dirty">
+                  <span ng-message="required">Age is required</span>
+                  <span ng-message="pattern">Only numbers are allowed</span>
+                </div>
+                <input type="submit" value="Add" ng-disabled="petForm.$invalid" />
+                <span class="remove" ng-click="togglePEdit()">Cancel</span>
+              </form>
+            </div>
+          </div>
+          <!-- End of edit forms -->
+
+          <!-- Teacher content display -->
+          <!-- Teacher Key info -->
+          <div>
+            <h1>Teacher Section</h1>
+            <img src="content\img\teacher.jpg" alt="Profile image of teacher" />
+            <h2>Name: {{teacher.firstname}} {{teacher.surname}}</h2>
+            <p>Main Subject: {{teacher.subject}}</p>
+            <p>Contact Tel: {{teacher.tel}}</p>
+          </div>
+          <!-- End of teacher key info -->
+
+          <!-- Interests Lists -->
+          <div>
+            <h3>Interests</h3>
+            <table class="info">
+              <tr ng-repeat="each in interests">
+                <td>{{each}}</td>
+                <td><span class="remove" ng-click="removeInterest(each)">x</span></td>
+              </tr>
+            </table>
+          </div>
+          <!-- End of interests -->
+
+          <!-- Pet info -->
+          <div>
+            <h3>Pets</h3>
+            <input type="button" class="filters" ng-click="order = 'name'" value="Order by name" />
+            <input type="button" class="filters" ng-click="order = 'species'" value="Order by species" />
+            <table class="info">
+              <tr>
+                <th>Name</th>
+                <th>Species</th>
+                <th>gender</th>
+                <th>Age</th>
+                <th></th>
+              </tr>
+              <tr ng-repeat="each in pets | orderBy: order">
+                <td>{{each.name}}</td>
+                <td>{{each.species}}</td>
+                <td>{{each.gender}}</td>
+                <td>{{each.age}} years</td>
+                <td><span class="remove" ng-click="removePet(each)">x</span></td>
+              </tr>
+            </table>
+          </div>
+          <!-- End of pet info -->
         </div>
+        <!-- End of teacher page content -->
       </div>
+      <!-- End of main app content -->
     </div>
+    <!-- End of page container -->
   </body>
 
 </html>

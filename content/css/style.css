@@ -34,7 +34,7 @@ header nav ul{
 
 input, select{
   padding:8px;
-  border: solid 1px #ccc;
+  border: solid 1px #eee;
   border-radius: 4px;
 }
 input[type="submit"]{
@@ -55,7 +55,7 @@ nav input{
 }
 
 .left-nav{
-  background-color: #ccc;
+  background-color: #eee;
 }
 .left-nav h3{
   text-align: center;
@@ -68,13 +68,76 @@ nav input{
 .content{
   background-color: white;
   flex-grow: 1;
-  padding: 1%;
+  padding: 2%;
 }
 
 .content h1, h2{
   margin-bottom:10px;
 }
 
+.content img{
+  border-radius: 50%;
+  width: 20%;
+}
+.homeView{
+  text-align: center;
+}
+.homeView h1{
+  margin: 40px 0;
+}
+.teacherContent h3, .teacherContent h2{
+  margin:40px 0 20px 0;
+}
+.editForm h2{
+  margin-top:20px;
+}
+.filters{
+  margin: 20px 0;
+}
+.editForm{
+  position: absolute;
+  width: 50%;
+  margin-left: 20%;
+  padding: 20px;
+  background: #ccc;
+  border-radius: 10px;
+  text-align: center;
+  display: none;
+}
+.editForm input, .editForm select{
+  width: 95%;
+  margin-bottom: 8px;
+}
+.editForm input[type="submit"]{
+  width:20%;
+}
+.editForm span{
+  display:block;
+  margin: 0;
+}
+.error{
+  color: red;
+  margin-bottom: 5px;
+}
+.studentData{
+  width: 100%;
+  border: 1px #eee solid;
+  border-radius: 10px;
+}
+
+.studentData tr:first-child{
+  font-weight: bold;
+}
+.info{
+  border: 1px #eee solid;
+  border-radius: 10px;
+}
+td{
+  padding: 10px;
+}
+.studentData td:first-of-type{
+  width: 10%;
+}
 .hidden{
   display: none;
 }
