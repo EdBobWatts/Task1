@@ -1,12 +1,23 @@
-var app = angular.module('MyClassApp', ["ngSanitize"]);
+var app = angular.module('MyClassApp', ["ngSanitize","ngMessages"]);
 
 app.controller('MainCtrl', function($scope) {
-  $scope.showTeacherState = "showing";
-  $scope.showStudentsState = "hidden";
+  $scope.views = {
+    teacher: "hidden",
+    students: "hidden",
+    home: "showing"
+  };
+
+  $scope.showEdit = {
+    teacher: "hidden",
+    interests: "hidden",
+    pets: "hidden"
+  };
+
   // Initialise teacher info
   $scope.teacher = {
     firstname: "Corey",
     surname: "Doctorow",
+    subject: "Computer Science",
     tel: "01234567890"
   };
 
@@ -33,26 +44,37 @@ app.controller('MainCtrl', function($scope) {
       age: '8'
   }];
 
-  // Handle students link
+  //VIEWS
+  // Handle students view link
   $scope.showStudents = function(){
-    $scope.showTeacherState = "hidden";
-    $scope.showStudentsState = "showing";
+    $scope.views.teacher = "hidden";
+    $scope.views.students = "showing";
+    $scope.views.home = "hidden";
   };
 
 
-  // Handle teacher link
+  // Handle teacher view link
   $scope.showTeacher = function(){
-    $scope.showTeacherState = "showing";
-    $scope.showStudentsState = "hidden";
+    $scope.views.teacher = "showing";
+    $scope.views.students = "hidden";
+    $scope.views.home = "hidden";
   };
 
+  // Handle home view link
+  $scope.goHome = function(){
+    $scope.views.teacher = "hidden";
+    $scope.views.students = "hidden";
+    $scope.views.home = "showing";
+  };
 
+  //INTERESTS
   //Add new interest data to array
   $scope.addInterest = function(){
     //Push the data to the array
     $scope.interests.push($scope.newInterest)
     //Clear out the input fields
     $scope.newInterest ="";
+    $scope.showEdit.interests = "hidden";
   };
 
 
@@ -64,6 +86,7 @@ app.controller('MainCtrl', function($scope) {
     $scope.interests.splice(removedInterest, 1);
   };
 
+  //PETS
   //Add new pet data to array
   $scope.addPet = function(){
     //Push the data to the array
@@ -78,6 +101,7 @@ app.controller('MainCtrl', function($scope) {
     $scope.newPet.species ="";
     $scope.newPet.gender ="";
     $scope.newPet.age ="";
+    $scope.showEdit.pets ="hidden";
   };
 
   //Remove selected pet from array
@@ -88,29 +112,66 @@ app.controller('MainCtrl', function($scope) {
     $scope.pets.splice(removedPet, 1);
   };
 
+  //INFO EDIT FORMS
     //Toggle the display of teacher edit form
-  $scope.toggleEdit = function(){
-    if($scope.showEdit == ""){
-      $scope.showEdit = "showing";
+  $scope.toggleTEdit = function(){
+    if($scope.showEdit.teacher == "hidden"){
+      $scope.showEdit.teacher = "showing";
+
+      //Hide other forms
+      $scope.showEdit.interests = "hidden";
+      $scope.showEdit.pets = "hidden";
     } else {
-      $scope.showEdit = "";
+      $scope.showEdit.teacher = "hidden";
     }
   };
 
+  //Toggle the display of interests edit form
+  $scope.toggleIEdit = function(){
+    if($scope.showEdit.interests == "hidden"){
+      $scope.showEdit.interests = "showing";
+
+      //Hide other forms
+      $scope.showEdit.teacher = "hidden";
+      $scope.showEdit.pets = "hidden";
+    } else {
+      $scope.showEdit.interests = "hidden";
+    }
+  };
+
+  //Toggle the display of pets edit form
+  $scope.togglePEdit = function(){
+    if($scope.showEdit.pets == "hidden"){
+      $scope.showEdit.pets = "showing";
+      //Hide other forms
+      $scope.showEdit.teacher = "hidden";
+      $scope.showEdit.interests = "hidden";
+    } else {
+      $scope.showEdit.pets = "hidden";
+    }
+  };
+
+
+
+  //TEACHER EDIT
   // Handle submission of teacher edit form
   $scope.editTeacher = function(){
    $scope.teacher.firstname = $scope.newFirstname;
    $scope.teacher.surname  = $scope.newSurname;
    $scope.teacher.tel  = $scope.newTelNo;
+   $scope.teacher.subject = $scope.newSubject;
 
    //Clear out the fields
    $scope.newTelNo = "";
    $scope.newFirstname = "";
    $scope.newSurname = "";
+   $scope.newSubject = "";
+   $scope.showEdit.teacher = "hidden";
  }
 });
 
 
+//CSV IMPORT
 app.directive('fileReader', function() {
   return {
     scope: {
@@ -118,12 +179,19 @@ app.directive('fileReader', function() {
     },
     link: function(scope, element) {
       $(element).on('change', function(changeEvent) {
+        //Get target file
         var files = changeEvent.target.files;
+        //Check there is a file present
         if (files.length) {
           var r = new FileReader();
           r.onload = function(e) {
+              //load contents from CSV
               var contents = e.target.result;
+              //Parse CSV with Papaparse library - header set to false so that
+              //Output is an array.
               var results = Papa.parse(contents, {header: false, skipEmptyLines: true});
+
+              //Construct HTML table using 2D array.
               var newTableContent = "";
               results.data.forEach(function(row) {
                 newTableContent = newTableContent+"<tr>";
@@ -132,6 +200,7 @@ app.directive('fileReader', function() {
                 });
                 newTableContent = newTableContent+"</tr>";
               });
+              //bind HTML table to fileReader
               scope.fileReader = newTableContent;
               scope.$apply();
           };
